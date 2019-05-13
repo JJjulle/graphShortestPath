@@ -86,7 +86,7 @@ public class ShortetstPathMain {
 
 			}
 		} else {
-			
+
 			while(input.hasNextLine()) {
 
 				String line = input.nextLine();
@@ -119,7 +119,8 @@ public class ShortetstPathMain {
 				// adding
 				graph.get(indexMain).addAdjecent(graph.get(indexadj), Integer.parseInt(word[2]));
 
-			
+
+			}
 		}
 
 		for(int i = 0; i < graph.size();i++) {
