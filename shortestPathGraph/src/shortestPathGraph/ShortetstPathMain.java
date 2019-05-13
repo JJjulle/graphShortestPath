@@ -86,7 +86,40 @@ public class ShortetstPathMain {
 
 			}
 		} else {
-			directed();
+			
+			while(input.hasNextLine()) {
+
+				String line = input.nextLine();
+				String [] word = line.split(" ");
+				// noden vi skall lägga till
+				boolean flagMain = true;
+				// noden som skall bli tillagd
+				boolean flagAdj = true;
+				int index = 0;
+				int indexMain = 0;
+				int indexadj = 0;
+
+				// find this node and the one that should be added
+				while(flagMain || flagAdj) {
+					if(graph.get(index).getData().equals(word[0])) {
+						flagMain = false;
+						indexMain = index;
+					}
+					if(graph.get(index).getData().equals(word[1]))
+					{ 
+						flagAdj = false;
+						indexadj = index;
+					}
+					if(flagAdj || flagMain) {
+						index++;
+					}
+
+				}
+
+				// adding
+				graph.get(indexMain).addAdjecent(graph.get(indexadj), Integer.parseInt(word[2]));
+
+			
 		}
 
 		for(int i = 0; i < graph.size();i++) {
