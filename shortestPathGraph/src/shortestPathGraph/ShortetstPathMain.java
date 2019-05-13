@@ -36,16 +36,17 @@ public class ShortetstPathMain {
 		String type = input.nextLine();
 		System.out.println(type);
 
-		if(type.equals("UNDIRECTED")) {
-			int count = 0;
-			String data = null;
-			// create nodes
-			while(!(data = input.nextLine() ).isEmpty()) {
-				graph.add(new Node(data, count));
-				count++;
 
-			}
-			//add adjacent
+		int count = 0;
+		String data = null;
+		// create nodes
+		while(!(data = input.nextLine() ).isEmpty()) {
+			graph.add(new Node(data, count));
+			count++;
+
+		}
+		//add adjacent
+		if(type.equals("UNDIRECTED")) {
 
 			while(input.hasNextLine()) {
 
@@ -84,10 +85,10 @@ public class ShortetstPathMain {
 
 
 			}
-
 		} else {
 			directed();
 		}
+
 		for(int i = 0; i < graph.size();i++) {
 			System.out.println("\n");
 			System.out.println(graph.get(i).getInfo());
