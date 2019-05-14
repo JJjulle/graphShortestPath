@@ -19,9 +19,17 @@ public class ShortetstPathMain {
 	 */
 	public static void main(String[] args) {
 		ArrayList<Node> graph = new ArrayList<Node>();
+		
+		// get start and end data of node
+		String[] info  = args[1].split("-");
+		String start = info[0];
+		String end = info[1];
+		
+		
 
 		String path = "/Users/Justad/Desktop/testFileGraph.txt"; // lagt in den i args[0] med
 		String route = "Alpha - Delta";							// lagt in den i args[1] med
+		
 
 		System.out.println("path: "+ args[0] +"\nroute: "+args[1]);
 		File inDataFile = new File(args[0]);
@@ -130,7 +138,14 @@ public class ShortetstPathMain {
 			System.out.println(graph.get(i).getInfo());
 		}
 		
-		for(Node k : graph)
+		for(Node k : graph) {
+			k.setDist(10000);
+			k.setHandled(false);
+		}
+		
+		System.out.println();
+		
+		
 
 	}
 
