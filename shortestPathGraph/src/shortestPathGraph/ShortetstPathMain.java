@@ -132,18 +132,20 @@ public class ShortetstPathMain {
 
 			}
 		}
-
-		for(int i = 0; i < graph.size();i++) {
-			System.out.println("\n");
-			System.out.println(graph.get(i).getInfo());
-		}
 		
 		for(Node k : graph) {
 			k.setDist(10000);
 			k.setHandled(false);
+			if(k.getData().equalsIgnoreCase(start))
+				k.setDist(0);
 		}
 		
-		System.out.println();
+		System.out.println(start + " - " + end);
+		for(int i = 0; i < graph.size();i++) {
+			System.out.println("\n");
+			System.out.println(graph.get(i).getInfo());
+
+		}
 		
 		
 

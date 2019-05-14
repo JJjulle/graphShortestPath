@@ -76,7 +76,8 @@ public class Node {
 	}
 	
 	public String getInfo() {
-		String res = this.data;
+		String res = this.data + " " + this.handled + " " + this.dist;
+		
 		res = res + "\nadjacent       cost";
 		for(int i = 0; i < this.adjacent.size(); i++) {
 			res = res + "\n"+this.adjacent.get(i).data+"      "+this.costs.get(i);
