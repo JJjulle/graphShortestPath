@@ -10,6 +10,25 @@ public class Node {
 	private int id;
 	
 	private Node prevNode;
+	public Node getPrevNode() {
+		return prevNode;
+	}
+	public void setPrevNode(Node prevNode) {
+		this.prevNode = prevNode;
+	}
+	public Integer getDist() {
+		return dist;
+	}
+	public void setDist(Integer dist) {
+		this.dist = dist;
+	}
+	public boolean isHandled() {
+		return handled;
+	}
+	public void setHandled(boolean handled) {
+		this.handled = handled;
+	}
+
 	private Integer dist;
 	private boolean handled;
 	
