@@ -129,6 +129,8 @@ public class ShortetstPathMain {
 			System.out.println("\n");
 			System.out.println(graph.get(i).getInfo());
 		}
+		
+		for(Node k : graph)
 
 	}
 

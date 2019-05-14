@@ -10,6 +10,9 @@ public class Node {
 	private int id;
 	
 	private Node prevNode;
+	private Integer dist;
+	private boolean handled;
+	
 	public Node getPrevNode() {
 		return prevNode;
 	}
@@ -28,9 +31,6 @@ public class Node {
 	public void setHandled(boolean handled) {
 		this.handled = handled;
 	}
-
-	private Integer dist;
-	private boolean handled;
 	
 	public Node(String data, Node adjacent, Integer costs, int id) {
 		super();
