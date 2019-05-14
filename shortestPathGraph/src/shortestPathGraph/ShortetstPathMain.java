@@ -51,7 +51,9 @@ public class ShortetstPathMain {
 			while(input.hasNextLine()) {
 
 				String line = input.nextLine();
-				String [] word = line.split(" ");
+				String [] word = line.split("\t");
+				for(int i = 0; i<word.length; i++)
+					System.out.println(word[i]);
 				// noden vi skall lägga till
 				boolean flagMain = true;
 				// noden som skall bli tillagd
@@ -76,7 +78,7 @@ public class ShortetstPathMain {
 					}
 
 				}
-
+				
 				// adding
 				graph.get(indexMain).addAdjecent(graph.get(indexadj), Integer.parseInt(word[2]));
 
@@ -90,7 +92,7 @@ public class ShortetstPathMain {
 			while(input.hasNextLine()) {
 
 				String line = input.nextLine();
-				String [] word = line.split(" ");
+				String [] word = line.split("\t");
 				// noden vi skall lägga till
 				boolean flagMain = true;
 				// noden som skall bli tillagd

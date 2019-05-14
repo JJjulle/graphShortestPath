@@ -8,6 +8,11 @@ public class Node {
 	private ArrayList<Node> adjacent = new ArrayList<Node>();
 	private ArrayList<Integer> costs = new ArrayList<Integer>();
 	private int id;
+	
+	private Node prevNode;
+	private Integer dist;
+	private boolean handled;
+	
 	public Node(String data, Node adjacent, Integer costs, int id) {
 		super();
 		this.data = data;
