@@ -19,6 +19,8 @@ public class ShortetstPathMain {
 	 */
 	public static void main(String[] args) {
 		ArrayList<Node> graph = new ArrayList<Node>();
+		PriorityQueue minHeap = new PriorityQueue();
+		System.out.println("path: "+ args[0] +"\nroute: "+args[1]);
 		
 		// get start and end data of node
 		String[] info  = args[1].split("-");
@@ -31,7 +33,7 @@ public class ShortetstPathMain {
 		String route = "Alpha - Delta";							// lagt in den i args[1] med
 		
 
-		System.out.println("path: "+ args[0] +"\nroute: "+args[1]);
+		
 		File inDataFile = new File(args[0]);
 		Scanner input = null;
 		try {
@@ -134,17 +136,35 @@ public class ShortetstPathMain {
 		}
 		
 		for(Node k : graph) {
-			k.setDist(10000);
+//			k.setDist(10000);
+			
+			
+			// test av heap
+			int ran = (int) (Math.random()*100);
+			k.setDist(ran);
+			minHeap.enqueue(k);
+			
 			k.setHandled(false);
 			if(k.getData().equalsIgnoreCase(start))
 				k.setDist(0);
+			
 		}
+
+		
 		
 		System.out.println(start + " - " + end);
 		for(int i = 0; i < graph.size();i++) {
 			System.out.println("\n");
 			System.out.println(graph.get(i).getInfo());
 
+		}
+		
+		System.out.println("heap - test");
+		
+		while(!minHeap.isEmpty()) {
+			Node k = minHeap.peek();
+			System.out.print("\n"+k.getData()+ "dist: "+k.getDist());
+			minHeap.dequeue();
 		}
 		
 		
