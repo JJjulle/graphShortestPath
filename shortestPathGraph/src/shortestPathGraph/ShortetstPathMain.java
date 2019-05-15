@@ -26,6 +26,8 @@ public class ShortetstPathMain {
 		String[] info  = args[1].split("-");
 		String start = info[0];
 		String end = info[1];
+		int startIndex = -1;
+		int endIndex = -1;
 		
 		
 
@@ -52,6 +54,7 @@ public class ShortetstPathMain {
 		// create nodes
 		while(!(data = input.nextLine() ).isEmpty()) {
 			graph.add(new Node(data, count));
+			graph.get(count).setId(count);
 			count++;
 
 		}
@@ -135,45 +138,114 @@ public class ShortetstPathMain {
 			}
 		}
 		
+		
 		for(Node k : graph) {
-//			k.setDist(10000);
-			
-			
-			// test av heap
-			int ran = (int) (Math.random()*100);
-			k.setDist(ran);
-			minHeap.enqueue(k);
+			k.setDist(10000);
+//			// test av heap
+//			int ran = (int) (Math.random()*100);
+//			k.setDist(ran);
+//			minHeap.enqueue(k);
 			
 			k.setHandled(false);
-			if(k.getData().equalsIgnoreCase(start))
+			if(k.getData().equalsIgnoreCase(start)) {
 				k.setDist(0);
+				startIndex = k.getId();
+			}
+			if(k.getData().equalsIgnoreCase(end))
+				endIndex = k.getId();
 			
 		}
 
 		
 		
-		System.out.println(start + " - " + end);
-		for(int i = 0; i < graph.size();i++) {
-			System.out.println("\n");
-			System.out.println(graph.get(i).getInfo());
-
-		}
+//		System.out.println(start + " - " + end);
+//		for(int i = 0; i < graph.size();i++) {
+//			System.out.println("\n");
+//			System.out.println(graph.get(i).getInfo());
+//
+//		}
 		
-		System.out.println("heap - test");
+		//algon
+		Node startNode = graph.get(startIndex);
+		Node endNode = graph.get(endIndex);
+		
+		for(int i = 0; i < startNode.getAdjacent().size(); i++) {
+			
+			Node current  = startNode.getAdjacent().get(i);
+			int currentCost = startNode.getCosts().get(i);
+			
+			current.setDist(currentCost + startNode.getDist());
+			current.setPrevNode(startNode);
+			graph.get(startNode.getId()).setHandled(true);
+			
+			minHeap.enqueue(current);
+			
+		}
+//		displayHeap(minHeap);
+		
 		
 		while(!minHeap.isEmpty()) {
-			Node k = minHeap.peek();
-			System.out.print("\n"+k.getData()+ "dist: "+k.getDist());
+			Node current = minHeap.peek();
+			System.out.println(current.getData());
 			minHeap.dequeue();
+			if(!current.isHandled()){
+				current.setHandled(true);
+				for(int i = 0; i < current.getAdjacent().size(); i++) {
+				Node adjc = current.getAdjacent().get(i);
+				int cost = current.getCosts().get(i);
+				
+				if(!adjc.isHandled())
+				{
+					adjc.setDist(current.getDist() + cost);
+					adjc.setPrevNode(current);
+					minHeap.enqueue(adjc);
+				}
+				}
+			}
+			
+			
+			
 		}
 		
 		
+		displayHeap(minHeap);
+		displayGraph(graph);
+		System.out.println(printShortestPath(startNode, endNode));
 
+
+	}
+	
+	public static String printShortestPath(Node start, Node current){
+		if(current.getData().equals(start.getData()))
+			return start.getData();
+		else{
+			return printShortestPath(start, current.getPrevNode()) + " -> " + current.getData();
+		}
 	}
 
 	private static void directed() {
 		// TODO Auto-generated method stub
 
+	}
+	
+	private static void displayHeap(PriorityQueue minHeap) {
+		PriorityQueue copy = new PriorityQueue();
+		copy = minHeap;
+		System.out.println("-------------------------------------------------");
+		while(!copy.isEmpty()) {
+			Node k = copy.peek();
+			System.out.print("\n"+k.getData()+ "dist: "+k.getDist());
+			copy.dequeue();
+		}
+	}
+	
+	private static void displayGraph(ArrayList<Node> graph) {
+		System.out.println("-------------------------------------------------");
+		for(int i = 0; i < graph.size();i++) {
+			System.out.println("\n");
+			System.out.println(graph.get(i).getInfo());
+
+		}
 	}
 
 }
