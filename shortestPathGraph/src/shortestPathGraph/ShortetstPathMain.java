@@ -159,7 +159,7 @@ public class ShortetstPathMain {
 
 		for (int i = 0; i < startNode.getAdjacent().size(); i++) {
 
-			Node current = startNode.getAdjacent().get(i);
+			Node current = copyNode(startNode.getAdjacent().get(i));
 			int currentCost = startNode.getCosts().get(i);
 
 			current.setDist(currentCost + startNode.getDist());
@@ -172,16 +172,21 @@ public class ShortetstPathMain {
 //		displayHeap(minHeap);
 
 		while (!minHeap.isEmpty()) {
-			Node current = minHeap.peek();
-			System.out.println(current.getData());
+			Node current = copyNode(minHeap.peek());
+			//System.out.println(current.getData());
+			Node realNode = graph.get(current.getId());
 			minHeap.dequeue();
-			if (!current.isHandled()) {
-				current.setHandled(true);
+			
+			if (!realNode.isHandled()) {
+				realNode.setDist(current.getDist());
+				realNode.setPrevNode(current.getPrevNode());
+				realNode.setHandled(true);
 				for (int i = 0; i < current.getAdjacent().size(); i++) {
-					Node adjc = current.getAdjacent().get(i);
+					Node realAdjc = graph.get(current.getAdjacent().get(i).getId());
 					int cost = current.getCosts().get(i);
 
-					if (!adjc.isHandled()) {
+					if (!realAdjc.isHandled()) {
+						Node adjc = copyNode(realAdjc);
 						adjc.setDist(current.getDist() + cost);
 						adjc.setPrevNode(current);
 						minHeap.enqueue(adjc);
@@ -195,6 +200,20 @@ public class ShortetstPathMain {
 		displayGraph(graph);
 		System.out.println(printShortestPath(startNode, endNode));
 
+	}
+	
+	private static Node copyNode(Node original) {
+		Node copy = new Node();
+		copy.setAdjacent(original.getAdjacent());
+		copy.setCosts(original.getCosts());
+		copy.setData(original.getData());
+		copy.setDist(original.getDist());
+		copy.setHandled(original.isHandled());
+		copy.setId(original.getId());
+		copy.setPrevNode(original.getPrevNode());
+		
+		return copy;
+		
 	}
 
 	public static String printShortestPath(Node start, Node current) {

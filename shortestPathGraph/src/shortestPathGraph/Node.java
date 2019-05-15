@@ -32,6 +32,9 @@ public class Node {
 		this.handled = handled;
 	}
 	
+	public Node() {
+		
+	}
 	public Node(String data, Node adjacent, Integer costs, int id) {
 		super();
 		this.data = data;
