@@ -29,9 +29,6 @@ public class ShortetstPathMain {
 		int startIndex = -1;
 		int endIndex = -1;
 
-		String path = "/Users/Justad/Desktop/testFileGraph.txt"; // lagt in den i args[0] med
-		String route = "Alpha - Delta"; // lagt in den i args[1] med
-
 		File inDataFile = new File(args[0]);
 		Scanner input = null;
 		try {
@@ -146,12 +143,6 @@ public class ShortetstPathMain {
 
 		}
 
-//		System.out.println(start + " - " + end);
-//		for(int i = 0; i < graph.size();i++) {
-//			System.out.println("\n");
-//			System.out.println(graph.get(i).getInfo());
-//
-//		}
 
 		// algon
 		Node startNode = graph.get(startIndex);
@@ -169,11 +160,12 @@ public class ShortetstPathMain {
 			minHeap.enqueue(current);
 
 		}
-//		displayHeap(minHeap);
+		graph.get(startNode.getId()).setHandled(true);
 
-		while (!minHeap.isEmpty()) {
+
+		while (!minHeap.isEmpty() && !graph.get(endIndex).isHandled()) {
 			Node current = copyNode(minHeap.peek());
-			//System.out.println(current.getData());
+			
 			Node realNode = graph.get(current.getId());
 			minHeap.dequeue();
 			
