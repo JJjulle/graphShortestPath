@@ -5,6 +5,9 @@ package shortestPathGraph;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -39,7 +42,6 @@ public class ShortetstPathMain {
 		}
 
 		String type = input.nextLine();
-		System.out.println(type);
 
 		int count = 0;
 		String data = null;
@@ -51,88 +53,49 @@ public class ShortetstPathMain {
 
 		}
 		// add adjacent
-		if (type.equals("UNDIRECTED")) {
 
-			while (input.hasNextLine()) {
 
-				String line = input.nextLine();
-				String[] word = line.split("\t");
-				for (int i = 0; i < word.length; i++)
-					System.out.println(word[i]);
-				// noden vi skall lägga till
-				boolean flagMain = true;
-				// noden som skall bli tillagd
-				boolean flagAdj = true;
-				int index = 0;
-				int indexMain = 0;
-				int indexadj = 0;
+		while (input.hasNextLine()) {
 
-				// find this node and the one that should be added
-				while (flagMain || flagAdj) {
-					if (graph.get(index).getData().equals(word[0])) {
-						flagMain = false;
-						indexMain = index;
-					}
-					if (graph.get(index).getData().equals(word[1])) {
-						flagAdj = false;
-						indexadj = index;
-					}
-					if (flagAdj || flagMain) {
-						index++;
-					}
+			String line = input.nextLine();
+			String[] word = line.split("\t");
+			for (int i = 0; i < word.length; i++)
+				System.out.println(word[i]);
+			// noden vi skall lägga till
+			boolean flagMain = true;
+			// noden som skall bli tillagd
+			boolean flagAdj = true;
+			int index = 0;
+			int indexMain = 0;
+			int indexadj = 0;
 
+			// find this node and the one that should be added
+			while (flagMain || flagAdj) {
+				if (graph.get(index).getData().equals(word[0])) {
+					flagMain = false;
+					indexMain = index;
 				}
-
-				// adding
-				graph.get(indexMain).addAdjecent(graph.get(indexadj), Integer.parseInt(word[2]));
-
-				// cause undirected, ta bort raden nedan blir den directed
-				graph.get(indexadj).addAdjecent(graph.get(indexMain), Integer.parseInt(word[2]));
+				if (graph.get(index).getData().equals(word[1])) {
+					flagAdj = false;
+					indexadj = index;
+				}
+				if (flagAdj || flagMain) {
+					index++;
+				}
 
 			}
-		} else {
 
-			while (input.hasNextLine()) {
-
-				String line = input.nextLine();
-				String[] word = line.split("\t");
-				// noden vi skall lägga till
-				boolean flagMain = true;
-				// noden som skall bli tillagd
-				boolean flagAdj = true;
-				int index = 0;
-				int indexMain = 0;
-				int indexadj = 0;
-
-				// find this node and the one that should be added
-				while (flagMain || flagAdj) {
-					if (graph.get(index).getData().equals(word[0])) {
-						flagMain = false;
-						indexMain = index;
-					}
-					if (graph.get(index).getData().equals(word[1])) {
-						flagAdj = false;
-						indexadj = index;
-					}
-					if (flagAdj || flagMain) {
-						index++;
-					}
-
-				}
-
-				// adding
-				graph.get(indexMain).addAdjecent(graph.get(indexadj), Integer.parseInt(word[2]));
-
+			// adding
+			graph.get(indexMain).addAdjecent(graph.get(indexadj), Integer.parseInt(word[2]));
+			if (type.equals("UNDIRECTED")) {
+				// cause undirected, ta bort raden nedan blir den directed
+				graph.get(indexadj).addAdjecent(graph.get(indexMain), Integer.parseInt(word[2]));
 			}
 		}
 
-		for (Node k : graph) {
-			k.setDist(10000);
-//			// test av heap
-//			int ran = (int) (Math.random()*100);
-//			k.setDist(ran);
-//			minHeap.enqueue(k);
 
+		for (Node k : graph) {
+			k.setDist(Integer.MAX_VALUE);
 			k.setHandled(false);
 			if (k.getData().equalsIgnoreCase(start)) {
 				k.setDist(0);
@@ -140,14 +103,12 @@ public class ShortetstPathMain {
 			}
 			if (k.getData().equalsIgnoreCase(end))
 				endIndex = k.getId();
-
 		}
 
-
-		// algon
 		Node startNode = graph.get(startIndex);
 		Node endNode = graph.get(endIndex);
 
+		//Uppdaterar distans och lägger in startnodens grannar i en min heap
 		for (int i = 0; i < startNode.getAdjacent().size(); i++) {
 
 			Node current = copyNode(startNode.getAdjacent().get(i));
@@ -155,20 +116,19 @@ public class ShortetstPathMain {
 
 			current.setDist(currentCost + startNode.getDist());
 			current.setPrevNode(startNode);
-			graph.get(startNode.getId()).setHandled(true);
-
+			
 			minHeap.enqueue(current);
 
 		}
-		graph.get(startNode.getId()).setHandled(true);
+		startNode.setHandled(true);
 
 
 		while (!minHeap.isEmpty() && !graph.get(endIndex).isHandled()) {
 			Node current = copyNode(minHeap.peek());
-			
+
 			Node realNode = graph.get(current.getId());
 			minHeap.dequeue();
-			
+
 			if (!realNode.isHandled()) {
 				realNode.setDist(current.getDist());
 				realNode.setPrevNode(current.getPrevNode());
@@ -185,15 +145,31 @@ public class ShortetstPathMain {
 					}
 				}
 			}
-
 		}
 
-		displayHeap(minHeap);
-		displayGraph(graph);
 		System.out.println(printShortestPath(startNode, endNode));
+		writeAwnser(startNode, endNode);
+		
 
 	}
-	
+
+	private static void writeAwnser(Node startNode, Node endNode){
+		FileWriter myfile2;
+		try {
+			myfile2 = new FileWriter ("Anwser.txt", false);
+			PrintWriter printData = new PrintWriter(myfile2);
+			
+			printData.println("0");
+			printData.println(endNode.getDist());
+			printData.print(printShortestPath(startNode, endNode));
+			
+			printData.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+	}
+
 	private static Node copyNode(Node original) {
 		Node copy = new Node();
 		copy.setAdjacent(original.getAdjacent());
@@ -203,9 +179,9 @@ public class ShortetstPathMain {
 		copy.setHandled(original.isHandled());
 		copy.setId(original.getId());
 		copy.setPrevNode(original.getPrevNode());
-		
+
 		return copy;
-		
+
 	}
 
 	public static String printShortestPath(Node start, Node current) {
