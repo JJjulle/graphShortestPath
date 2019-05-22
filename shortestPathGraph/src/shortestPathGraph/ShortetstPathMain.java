@@ -23,7 +23,6 @@ public class ShortetstPathMain {
 	public static void main(String[] args) {
 		ArrayList<Node> graph = new ArrayList<Node>();
 		PriorityQueue minHeap = new PriorityQueue();
-		System.out.println("path: " + args[0] + "\nroute: " + args[1]);
 
 		// get start and end data of node
 		String[] info = args[1].split("-");
@@ -59,8 +58,6 @@ public class ShortetstPathMain {
 
 			String line = input.nextLine();
 			String[] word = line.split("\t");
-			for (int i = 0; i < word.length; i++)
-				System.out.println(word[i]);
 			// noden vi skall lägga till
 			boolean flagMain = true;
 			// noden som skall bli tillagd
@@ -88,7 +85,7 @@ public class ShortetstPathMain {
 			// adding
 			graph.get(indexMain).addAdjecent(graph.get(indexadj), Integer.parseInt(word[2]));
 			if (type.equals("UNDIRECTED")) {
-				// cause undirected, ta bort raden nedan blir den directed
+				// cause undirected
 				graph.get(indexadj).addAdjecent(graph.get(indexMain), Integer.parseInt(word[2]));
 			}
 		}
@@ -103,6 +100,11 @@ public class ShortetstPathMain {
 			}
 			if (k.getData().equalsIgnoreCase(end))
 				endIndex = k.getId();
+		}
+		
+		if(startIndex == -1 || endIndex == -1) {
+			System.out.println("node doesn´t exist");
+			System.exit(0);
 		}
 
 		Node startNode = graph.get(startIndex);
@@ -147,7 +149,6 @@ public class ShortetstPathMain {
 			}
 		}
 
-		System.out.println(printShortestPath(startNode, endNode));
 		writeAwnser(startNode, endNode);
 		
 
@@ -192,29 +193,8 @@ public class ShortetstPathMain {
 		}
 	}
 
-	private static void directed() {
-		// TODO Auto-generated method stub
 
-	}
 
-	private static void displayHeap(PriorityQueue minHeap) {
-		PriorityQueue copy = new PriorityQueue();
-		copy = minHeap;
-		System.out.println("-------------------------------------------------");
-		while (!copy.isEmpty()) {
-			Node k = copy.peek();
-			System.out.print("\n" + k.getData() + "dist: " + k.getDist());
-			copy.dequeue();
-		}
-	}
 
-	private static void displayGraph(ArrayList<Node> graph) {
-		System.out.println("-------------------------------------------------");
-		for (int i = 0; i < graph.size(); i++) {
-			System.out.println("\n");
-			System.out.println(graph.get(i).getInfo());
-
-		}
-	}
 
 }
